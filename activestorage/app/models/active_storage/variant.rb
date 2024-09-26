@@ -110,9 +110,29 @@ class ActiveStorage::Variant
 
     def process
       blob.open do |input|
-        variation.transform(input) do |output|
+        variation.transform(blob, input, format: format) do |output|
           service.upload(key, output, content_type: content_type)
         end
       end
     end
+
+    #only in rails 6 so try uncommenting if variant errors
+    # def specification
+    #   @specification ||=
+    #     if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
+    #       Specification.new \
+    #         filename: blob.filename,
+    #         content_type: blob.content_type,
+    #         format: nil
+    #     else
+    #       Specification.new \
+    #         filename: ActiveStorage::Filename.new("#{blob.filename.base}.png"),
+    #         content_type: "image/png",
+    #         format: "png"
+    #     end
+    # end
+
+    # delegate :format, to: :specification
+
+    # class Specification < OpenStruct; end
 end

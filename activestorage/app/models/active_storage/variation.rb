@@ -53,9 +53,10 @@ class ActiveStorage::Variation
 
   # Accepts a File object, performs the +transformations+ against it, and
   # saves the transformed image into a temporary file.
-  def transform(file, &block)
+  def transform(blob, file, format: nil, &block)
     ActiveSupport::Notifications.instrument("transform.active_storage") do
-      transformer.transform(file, format: format, &block)
+      # transformer.transform(file, format: format, &block)
+      transformer(blob).transform(file, format: format, &block)
     end
   end
 
@@ -81,7 +82,15 @@ class ActiveStorage::Variation
   end
 
   private
-    def transformer
-      ActiveStorage::Transformers::ImageProcessingTransformer.new(transformations.except(:format))
+    # def transformer
+    #   ActiveStorage::Transformers::ImageProcessingTransformer.new(transformations.except(:format))
+    # end
+    def transformer(blob)
+      transformer_class(blob).new(transformations)
     end
+
+    def transformer_class(blob)
+      ActiveStorage.transformers.detect { |klass| klass.accept?(blob) }
+    end
+
 end

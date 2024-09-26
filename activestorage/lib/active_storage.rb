@@ -51,6 +51,8 @@ module ActiveStorage
 
   mattr_accessor :queues, default: {}
 
+  mattr_accessor :transformers, default: [] # for variants
+
   mattr_accessor :previewers, default: []
   mattr_accessor :analyzers,  default: []
 
@@ -370,5 +372,7 @@ module ActiveStorage
 
     autoload :Transformer
     autoload :ImageProcessingTransformer
+    autoload :ImageTransformer
+    autoload :MiniMagickTransformer
   end
 end

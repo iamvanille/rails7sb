@@ -53,6 +53,21 @@ class ActiveStorage::VariantWithRecord
       end
     end
 
+    # below was the rails 6 for variants method, try replacing the above (default rails7) if errors
+    # def transform_blob
+    #   blob.open do |input|
+    #     if !blob.image? || blob.content_type.in?(ActiveStorage.web_image_content_types)
+    #       variation.transform(blob, input) do |output|
+    #         yield io: output, filename: blob.filename, content_type: blob.content_type, service_name: blob.service.name
+    #       end
+    #     else
+    #       variation.transform(blob, input, format: "png") do |output|
+    #         yield io: output, filename: "#{blob.filename.base}.png", content_type: "image/png", service_name: blob.service.name
+    #       end
+    #     end
+    #   end
+    # end
+
     def create_or_find_record(image:)
       @record =
         ActiveRecord::Base.connected_to(role: ActiveRecord.writing_role) do
