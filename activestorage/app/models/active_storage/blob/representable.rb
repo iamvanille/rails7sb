@@ -42,7 +42,8 @@ module ActiveStorage::Blob::Representable
   # Returns true if the variant processor can transform the blob (its content
   # type is in +ActiveStorage.variable_content_types+).
   def variable?
-    ActiveStorage.variable_content_types.include?(content_type)
+    # ActiveStorage.variable_content_types.include?(content_type)
+    ActiveStorage.transformers.any? { |klass| klass.accept?(self) }
   end
 
 
