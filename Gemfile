@@ -92,7 +92,7 @@ else
 end
 
 gem "useragent", require: false
-gem 'ffi', '~> 1.16', '>= 1.16.3'
+gem 'ffi', '=1.16.3'
 
 # Active Job
 group :job do
