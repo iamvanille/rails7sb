@@ -12,11 +12,24 @@ end
 module ActiveStorage
   module Transformers
     class ImageProcessingTransformer < Transformer
+      def self.accept?(blob)
+        ActiveStorage.variable_content_types.include?(blob.content_type)
+      end
+
+      def process(file, format:)
+        processor.
+          source(file).
+          loader(page: 0).
+          convert(format).
+          apply(operations).
+          call
+      end
       private
         class UnsupportedImageProcessingMethod < StandardError; end
         class UnsupportedImageProcessingArgument < StandardError; end
 
         def process(file, format:)
+          require "image_processing" unless defined?(ImageProcessing)
           processor.
             source(file).
             loader(page: 0).

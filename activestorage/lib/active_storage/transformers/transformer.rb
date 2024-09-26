@@ -13,6 +13,12 @@ module ActiveStorage
     class Transformer
       attr_reader :transformations
 
+      # Implement this method in a concrete subclass. Have it return true when given a blob from which
+      # the transformer can generate a variant.
+      def self.accept?(blob)
+        false
+      end
+
       def initialize(transformations)
         @transformations = transformations
       end
@@ -31,6 +37,14 @@ module ActiveStorage
       end
 
       private
+        def create_tempfile(ext: "")
+          ext = ".#{ext}" unless ext.blank? || ext.start_with?(".")
+          tempfile = Tempfile.new(["transformer_", ext], binmode: true)
+          yield tempfile
+        ensure
+          tempfile&.close!
+        end
+
         # Returns an open Tempfile containing a transformed image in the given +format+.
         # All subclasses implement this method.
         def process(file, format:) # :doc:
