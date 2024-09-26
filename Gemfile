@@ -150,7 +150,7 @@ group :test do
   gem "brakeman"
 end
 
-platforms :ruby, :windows do
+platforms :ruby, :mswin, :mswin64, :mingw, :x64_mingw  do
   gem "nokogiri", ">= 1.8.1", "!= 1.11.0"
 
   # Needed for compiling the ActionDispatch::Journey parser.
@@ -166,8 +166,24 @@ platforms :ruby, :windows do
   end
 end
 
-gem "tzinfo-data", platforms: [:windows, :jruby]
-gem "wdm", ">= 0.1.0", platforms: [:windows]
+platforms :jruby do
+  if ENV["AR_JDBC"]
+    gem "activerecord-jdbcsqlite3-adapter", github: "jruby/activerecord-jdbc-adapter", branch: "master"
+    group :db do
+      gem "activerecord-jdbcmysql-adapter", github: "jruby/activerecord-jdbc-adapter", branch: "master"
+      gem "activerecord-jdbcpostgresql-adapter", github: "jruby/activerecord-jdbc-adapter", branch: "master"
+    end
+  else
+    gem "activerecord-jdbcsqlite3-adapter", ">= 1.3.0"
+    group :db do
+      gem "activerecord-jdbcmysql-adapter", ">= 1.3.0"
+      gem "activerecord-jdbcpostgresql-adapter", ">= 1.3.0"
+    end
+  end
+end
+
+gem "tzinfo-data", platforms: [:mswin, :mswin64, :mingw, :x64_mingw , :jruby]
+gem "wdm", ">= 0.1.0", platforms: [:mswin, :mswin64, :mingw, :x64_mingw]
 
 # The error_highlight gem only works on CRuby 3.1 or later.
 # Also, Rails depends on a new API available since error_highlight 0.4.0.
