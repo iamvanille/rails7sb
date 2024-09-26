@@ -90,6 +90,7 @@ else
 end
 
 gem "useragent", require: false
+gem 'ffi', '~> 1.16', '>= 1.16.3'
 
 # Active Job
 group :job do
@@ -158,7 +159,7 @@ platforms :ruby, :windows do
 
   group :db do
     gem "pg", "~> 1.3"
-    gem "mysql2", "~> 0.5"
+    gem "mysql2", "~> 0.5.3"
     gem "trilogy", ">= 2.7.0"
   end
 end
