@@ -102,7 +102,7 @@ PATH
       activerecord (= 7.2.1)
       activestorage (= 7.2.1)
       activesupport (= 7.2.1)
-      bundler (>= 1.15.0)
+      bundler (>= 2.3.3)
       railties (= 7.2.1)
     railties (7.2.1)
       actionpack (= 7.2.1)
