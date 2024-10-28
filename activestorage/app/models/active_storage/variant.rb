@@ -79,9 +79,20 @@ class ActiveStorage::Variant
   # Use <tt>url_for(variant)</tt> (or the implied form, like <tt>link_to variant</tt> or <tt>redirect_to variant</tt>) to get the stable URL
   # for a variant that points to the ActiveStorage::RepresentationsController, which in turn will use this +service_call+ method
   # for its redirection.
-  def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline)
+
+  # def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline)
+  #   service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: content_type
+  # end
+  #dave mod to enable filename
+  def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline, filename: nil)
+    if filename.nil?
+      filename = specification.filename 
+    else
+      filename = ActiveStorage::Filename.wrap(filename)
+    end
     service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: content_type
   end
+
 
   # Downloads the file associated with this variant. If no block is given, the entire file is read into memory and returned.
   # That'll use a lot of RAM for very large files. If a block is given, then the download is streamed and yielded in chunks.
