@@ -24,19 +24,20 @@ module ActiveStorage
           apply(operations).
           call
       end
+      def process(file, format:)
+        require "image_processing" unless defined?(ImageProcessing)
+        processor.
+          source(file).
+          loader(page: 0).
+          convert(format).
+          apply(operations).
+          call
+      end
       private
         class UnsupportedImageProcessingMethod < StandardError; end
         class UnsupportedImageProcessingArgument < StandardError; end
 
-        def process(file, format:)
-          require "image_processing" unless defined?(ImageProcessing)
-          processor.
-            source(file).
-            loader(page: 0).
-            convert(format).
-            apply(operations).
-            call
-        end
+        
 
         def processor
           ImageProcessing.const_get(ActiveStorage.variant_processor.to_s.camelize)
