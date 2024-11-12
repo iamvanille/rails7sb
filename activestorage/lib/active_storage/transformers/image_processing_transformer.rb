@@ -24,6 +24,7 @@ module ActiveStorage
           apply(operations).
           call
       end
+      # this was in private but it was causing errors, idk if i should try to move it back later..
       def process(file, format:)
         require "image_processing" unless defined?(ImageProcessing)
         processor.
