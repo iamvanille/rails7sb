@@ -80,7 +80,9 @@ class ActiveStorage::Variant
   # for a variant that points to the ActiveStorage::RepresentationsController, which in turn will use this +service_call+ method
   # for its redirection.
   def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline)
-    service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: content_type
+    byebug
+    service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: "audio/wav"
+    # content_type
   end
 
   # Downloads the file associated with this variant. If no block is given, the entire file is read into memory and returned.
@@ -111,7 +113,8 @@ class ActiveStorage::Variant
     def process
       blob.open do |input|
         variation.transform(input) do |output|
-          service.upload(key, output, content_type: content_type)
+          service.upload(key, output, content_type: "audio/wav")
+          # content_type
         end
       end
     end
