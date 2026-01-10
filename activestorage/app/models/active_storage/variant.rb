@@ -80,7 +80,6 @@ class ActiveStorage::Variant
   # for a variant that points to the ActiveStorage::RepresentationsController, which in turn will use this +service_call+ method
   # for its redirection.
   def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline)
-    byebug
     service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: "audio/wav"
     # content_type
   end
