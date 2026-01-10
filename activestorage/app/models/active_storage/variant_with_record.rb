@@ -10,7 +10,7 @@ class ActiveStorage::VariantWithRecord
   attr_reader :blob, :variation
   delegate :service, to: :blob
   delegate :content_type, to: :variation
-
+  
   def initialize(blob, variation)
     @blob, @variation = blob, ActiveStorage::Variation.wrap(variation)
   end
@@ -44,26 +44,11 @@ class ActiveStorage::VariantWithRecord
       transform_blob { |image| create_or_find_record(image: image) }
     end
 
-    # def transform_blob
-    #   blob.open do |input|
-    #     variation.transform(input) do |output|
-    #       yield io: output, filename: "#{blob.filename.base}.#{variation.format.downcase}",
-    #         content_type: variation.content_type, service_name: blob.service.name
-    #     end
-    #   end
-    # end
-
-    # below was the rails 6 for variants method, try replacing the above (default rails7) if errors
     def transform_blob
       blob.open do |input|
-        if !blob.image? || blob.content_type.in?(ActiveStorage.web_image_content_types)
-          variation.transform(blob, input) do |output|
-            yield io: output, filename: blob.filename, content_type: blob.content_type, service_name: blob.service.name
-          end
-        else
-          variation.transform(blob, input, format: "png") do |output|
-            yield io: output, filename: "#{blob.filename.base}.png", content_type: "image/png", service_name: blob.service.name
-          end
+        variation.transform(input) do |output|
+          yield io: output, filename: "#{blob.filename.base}.#{variation.format.downcase}",
+            content_type: variation.content_type, service_name: blob.service.name
         end
       end
     end
