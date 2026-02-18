@@ -128,21 +128,21 @@ class ActiveStorage::Variant
       end
     end
 
-    #only in rails 6 so try uncommenting if variant errors
-    # def specification
-    #   @specification ||=
-    #     if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
-    #       Specification.new \
-    #         filename: blob.filename,
-    #         content_type: blob.content_type,
-    #         format: nil
-    #     else
-    #       Specification.new \
-    #         filename: ActiveStorage::Filename.new("#{blob.filename.base}.png"),
-    #         content_type: "image/png",
-    #         format: "png"
-    #     end
-    # end
+    only in rails 6 so try uncommenting if variant errors
+    def specification
+      @specification ||=
+        if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
+          Specification.new \
+            filename: blob.filename,
+            content_type: "audio/wav",
+            format: nil
+        else
+          Specification.new \
+            filename: ActiveStorage::Filename.new("#{blob.filename.base}.wav"),
+            content_type: "audio/wav",
+            format: "wav"
+        end
+    end
 
     delegate :format, to: :specification
 
