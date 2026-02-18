@@ -128,7 +128,7 @@ class ActiveStorage::Variant
       end
     end
 
-    only in rails 6 so try uncommenting if variant errors
+    # only in rails 6 so try uncommenting if variant errors
     def specification
       @specification ||=
         if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
