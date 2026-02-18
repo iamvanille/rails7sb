@@ -84,7 +84,7 @@ class ActiveStorage::Variant
   #   service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: content_type
   # end
   #dave mod to enable filename
-  def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline, filename: nil)
+  def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline, filename: nil, content_type: "audio/wav")
     if filename.nil?
       filename = specification.filename 
     else
@@ -129,20 +129,20 @@ class ActiveStorage::Variant
     end
 
     # only in rails 6 so try uncommenting if variant errors
-    def specification
-      @specification ||=
-        if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
-          Specification.new \
-            filename: blob.filename,
-            content_type: "audio/wav",
-            format: nil
-        else
-          Specification.new \
-            filename: ActiveStorage::Filename.new("#{blob.filename.base}.wav"),
-            content_type: "audio/wav",
-            format: "wav"
-        end
-    end
+    # def specification
+    #   @specification ||=
+    #     if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
+    #       Specification.new \
+    #         filename: blob.filename,
+    #         content_type: "audio/wav",
+    #         format: nil
+    #     else
+    #       Specification.new \
+    #         filename: ActiveStorage::Filename.new("#{blob.filename.base}.wav"),
+    #         content_type: "audio/wav",
+    #         format: "wav"
+    #     end
+    # end
 
     delegate :format, to: :specification
 
