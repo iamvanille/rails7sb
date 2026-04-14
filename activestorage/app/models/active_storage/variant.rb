@@ -84,13 +84,13 @@ class ActiveStorage::Variant
   #   service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: content_type
   # end
   #dave mod to enable filename
-  def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline, filename: nil, content_type: "audio/wav")
+  def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline, filename: nil, content_type: "audio/flac")
     if filename.nil?
       filename = specification.filename 
     else
       filename = ActiveStorage::Filename.wrap(filename)
     end
-    service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: "audio/wav"
+    service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: "audio/flac"
   end
 
 
