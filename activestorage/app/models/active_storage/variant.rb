@@ -122,7 +122,7 @@ class ActiveStorage::Variant
     def process
       blob.open do |input|
         variation.transform(input) do |output|
-          service.upload(key, output, content_type: "audio/wav")
+          service.upload(key, output, content_type: "audio/flac")
           # content_type
         end
       end
@@ -134,13 +134,13 @@ class ActiveStorage::Variant
         if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
           Specification.new \
             filename: blob.filename,
-            content_type: "audio/wav",
-            format: nil
+            content_type: "audio/flac",
+            format: :flac
         else
           Specification.new \
-            filename: ActiveStorage::Filename.new("#{blob.filename.base}.wav"),
-            content_type: "audio/wav",
-            format: :wav
+            filename: ActiveStorage::Filename.new("#{blob.filename.base}.flac"),
+            content_type: "audio/flac",
+            format: :flac
         end
     end
 
