@@ -85,9 +85,13 @@ class ActiveStorage::Variant
   # end
   #dave mod to enable filename
   def url(expires_in: ActiveStorage.service_urls_expire_in, disposition: :inline, filename: nil, content_type: "audio/flac")
+    #filename isnt always nil. with get_ffmpg_opts_str it goes through 
+    # byebug
     if filename.nil?
+      # Rails.logger.info("filename in variant.rb 89")
       filename = specification.filename 
     else
+      # Rails.logger.info("filename in variant.rb 94")
       filename = ActiveStorage::Filename.wrap(filename)
     end
     service.url key, expires_in: expires_in, disposition: disposition, filename: filename, content_type: "audio/flac"
@@ -122,6 +126,7 @@ class ActiveStorage::Variant
     def process
       blob.open do |input|
         variation.transform(input) do |output|
+          Rails.logger.info("process in variant.rb 125")
           service.upload(key, output, content_type: "audio/flac")
           # content_type
         end
@@ -129,22 +134,22 @@ class ActiveStorage::Variant
     end
 
     # only in rails 6 so try uncommenting if variant errors
-    def specification
-      @specification ||=
-        if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
-          Specification.new \
-            filename: blob.filename,
-            content_type: "audio/flac",
-            format: :flac
-        else
-          Specification.new \
-            filename: ActiveStorage::Filename.new("#{blob.filename.base}.flac"),
-            content_type: "audio/flac",
-            format: :flac
-        end
-    end
+    # def specification
+    #   @specification ||=
+    #     if !blob.image? || ActiveStorage.web_image_content_types.include?(blob.content_type)
+    #       Specification.new \
+    #         filename: blob.filename,
+    #         content_type: "audio/flac",
+    #         format: :flac
+    #     else
+    #       Specification.new \
+    #         filename: ActiveStorage::Filename.new("#{blob.filename.base}.flac"),
+    #         content_type: "audio/flac",
+    #         format: :flac
+    #     end
+    # end
 
-    delegate :format, to: :specification
+    # delegate :format, to: :specification
 
     class Specification < OpenStruct; end
 end
