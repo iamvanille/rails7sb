@@ -121,7 +121,7 @@ module ActiveStorage::Blob::Representable
       if web_image?
         format || :png
       else
-        :wav #THIS IS WHERE IT IS SET but it only works in png lol, otherwise i get ArgumentError Exception: wrong number of arguments (given 1, expected 2)
+        :flac #THIS IS WHERE IT IS SET but it only works in png lol, otherwise i get ArgumentError Exception: wrong number of arguments (given 1, expected 2)
       end
     end
 
