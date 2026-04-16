@@ -117,11 +117,10 @@ module ActiveStorage::Blob::Representable
     end
 
     def default_variant_format
-      byebug
       if web_image?
         format || :png
       else
-        :flac #THIS IS WHERE IT IS SET but it only works in png lol, otherwise i get ArgumentError Exception: wrong number of arguments (given 1, expected 2)
+        :png #THIS IS WHERE IT IS SET but it only works in png locally lol, otherwise i get ArgumentError Exception: wrong number of arguments (given 1, expected 2)
       end
     end
 
