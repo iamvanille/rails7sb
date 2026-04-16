@@ -120,7 +120,7 @@ module ActiveStorage::Blob::Representable
       if web_image?
         format || :png
       else
-        :png #THIS IS WHERE IT IS SET but it only works in png locally lol, otherwise i get ArgumentError Exception: wrong number of arguments (given 1, expected 2)
+        :wav #THIS IS WHERE IT IS SET but it only works in png locally lol - actually it doesnt work in png locally either, otherwise i get ArgumentError Exception: wrong number of arguments (given 1, expected 2) (thishappens when a variant must be created. i cannot do it locally)
       end
     end
 
